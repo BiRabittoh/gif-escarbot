@@ -1,33 +1,37 @@
 from telegram.ext import MessageHandler, ApplicationBuilder, filters
 from telegram import Update
-import logging, dotenv, os
-dotenv.load_dotenv()
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
+from dotenv import load_dotenv
+from os import getenv
+import logging
 
 async def forward(update: Update, _):
-    if update.effective_chat.id == CHANNEL_ID:
-        if update.channel_post is not None:
-            await update.channel_post.forward(GROUP_ID)
-            logger.info("Forwarded a message.")
-
-def err_missing_file(filename: str, exit_arg: int = 1):
+    if not update.effective_chat.id == CHANNEL_ID:
+        return logger.info("Ignoring message since it did not come from the correct chat_id.")
     
-    exit(exit_arg)
+    if update.channel_post is None:
+        return logger.warn("Got an invalid message from the correct chat_id.")
+    
+    await update.channel_post.forward(GROUP_ID)
+    return logger.info("Forwarded a message.")
+
+def config_error():
+    logger.error("Please create and fill the .env file.")
+    exit(1)
 
 if __name__ == "__main__":
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    load_dotenv()
     
     try:
-        TOKEN = str(os.getenv("token"))
-        GROUP_ID = int(os.getenv("group_id"))
-        CHANNEL_ID = int(os.getenv("channel_id"))
+        TOKEN = str(getenv("token"))
+        GROUP_ID = int(getenv("group_id"))
+        CHANNEL_ID = int(getenv("channel_id"))
     except TypeError:
-        logger.error(f"Please create and fill the following file: .env")
-        exit(1)
+        config_error()
     
     if '' in [TOKEN, GROUP_ID, CHANNEL_ID]:
-        logger.error(f"Please fill the following file: .env")
-        exit(1)
+        config_error()
     
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(MessageHandler(filters.ChatType.CHANNEL, forward))
