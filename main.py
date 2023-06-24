@@ -32,8 +32,8 @@ if __name__ == "__main__":
     
     try:
         TOKEN = str(getenv("token"))
-        GROUP_ID = int(getenv("group_id"))
-        CHANNEL_ID = int(getenv("channel_id"))
+        GROUP_ID = str(getenv("group_id"))
+        CHANNEL_ID = str(getenv("channel_id"))
         ADMIN_ID = int(getenv("admin_id"))
     except TypeError:
         config_error()
