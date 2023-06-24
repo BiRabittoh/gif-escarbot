@@ -9,11 +9,38 @@ payload = {
     "text": "Hello world!",
     
     "parse_mode": "markdown",
-    "reply_to_message_id": None,
+    "reply_to_message_id": "",
     "disable_web_page_preview": False,
     "disable_notification": False,
 }
 ## Config end
+
+''' EXAMPLES
+
+endpoint = "sendVideo"
+payload = {
+    "chat_id": getenv("group_id"),
+    "video": "https://media.tenor.com/zKYNgCu5TjYAAAAC/ness-pk-fire.gif",
+    "caption": "Test caption",
+    
+    "parse_mode": "markdown",
+    "reply_to_message_id": "",
+    "disable_web_page_preview": False,
+    "disable_notification": False,
+}
+
+endpoint = "sendPhoto"
+payload = {
+    "chat_id": getenv("group_id"),
+    "photo": "https://media.tenor.com/zKYNgCu5TjYAAAAC/ness-pk-fire.gif",
+    "caption": "Test caption",
+    
+    "parse_mode": "markdown",
+    "reply_to_message_id": "",
+    "disable_web_page_preview": False,
+    "disable_notification": False,
+}
+'''
 
 from requests import post
 response = post(f"https://api.telegram.org/bot{getenv('token')}/{endpoint}", json=payload,

@@ -14,6 +14,13 @@ async def forward(update: Update, _):
     await update.channel_post.forward(GROUP_ID)
     return logger.info("Forwarded a message.")
 
+async def admin_forward(update: Update, _):
+    try:
+        await update.message.forward(ADMIN_ID)
+        return logger.info(f"Forwarded this message to admin: {update.message.text}")
+    except:
+        return logger.error(f"Couldn't forward this update to admin: {update}")
+
 def config_error():
     logger.error("Please create and fill the .env file.")
     exit(1)
@@ -27,12 +34,14 @@ if __name__ == "__main__":
         TOKEN = str(getenv("token"))
         GROUP_ID = int(getenv("group_id"))
         CHANNEL_ID = int(getenv("channel_id"))
+        ADMIN_ID = int(getenv("admin_id"))
     except TypeError:
         config_error()
     
-    if '' in [TOKEN, GROUP_ID, CHANNEL_ID]:
+    if '' in [TOKEN, GROUP_ID, CHANNEL_ID, ADMIN_ID]:
         config_error()
     
     application = ApplicationBuilder().token(TOKEN).build()
     application.add_handler(MessageHandler(filters.ChatType.CHANNEL, forward))
+    application.add_handler(MessageHandler(filters.ChatType.PRIVATE, admin_forward))
     application.run_polling()
