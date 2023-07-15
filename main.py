@@ -5,7 +5,7 @@ from os import getenv
 import logging
 
 async def forward(update: Update, _):
-    if not update.effective_chat.id == CHANNEL_ID:
+    if not update.effective_chat.id == int(CHANNEL_ID):
         return logger.info("Ignoring message since it did not come from the correct chat_id.")
     
     if update.channel_post is None:
