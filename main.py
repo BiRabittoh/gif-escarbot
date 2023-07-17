@@ -5,7 +5,7 @@ from os import getenv
 import logging
 
 async def forward(update: Update, _):
-    if not update.effective_chat.id == int(CHANNEL_ID):
+    if not update.effective_chat.id == CHANNEL_ID:
         return logger.info("Ignoring message since it did not come from the correct chat_id.")
     
     if update.channel_post is None:
@@ -32,8 +32,8 @@ if __name__ == "__main__":
     
     try:
         TOKEN = str(getenv("token"))
-        GROUP_ID = str(getenv("group_id"))
-        CHANNEL_ID = str(getenv("channel_id"))
+        GROUP_ID = int(getenv("group_id"))
+        CHANNEL_ID = int(getenv("channel_id"))
         ADMIN_ID = int(getenv("admin_id"))
     except TypeError:
         config_error()
