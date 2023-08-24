@@ -1,6 +1,8 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from Config import INLINE_SEP
+from telegram.constants import ParseMode
+from Config import INLINE_SEP, FEEDBACK_TIMEOUT
 import logging, re, json
+from asyncio import sleep
 logger = logging.getLogger(__name__)
 
 re_flags = re.I | re.M
@@ -16,7 +18,7 @@ replacers = [
     },
 ]
 
-link_message = "[.]({})"
+link_message = "Link di {}[\.]({})"
 
 def get_callback_data(feedback: bool) -> str:
     payload = { "feedback": feedback }
@@ -60,8 +62,10 @@ async def replace(update: Update, _) -> None:
 
     for link in links:
         logger.info(link)
-        message = link_message.format(link)
-        await update.message.reply_text(message, parse_mode="markdown", reply_markup=get_message_markup())
+        text = link_message.format(update.effective_user.mention_markdown_v2(), link)
+        message = await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
+        await sleep(FEEDBACK_TIMEOUT)
+        await message.edit_reply_markup(reply_markup=get_message_markup())
 
 async def feedback(update: Update, _, data_json: str) -> None:
     data = json.loads(data_json)
