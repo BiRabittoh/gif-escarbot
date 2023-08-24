@@ -2,10 +2,12 @@ import logging
 from os import getenv
 from dotenv import load_dotenv
 load_dotenv()
-logger = logging.getLogger(__name__)
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logging.getLogger("httpx").setLevel(logging.WARNING)
+
+logger = logging.getLogger(__name__)
+INLINE_SEP = 3 * "#"
 
 def config_error():
     logger.error("Please create and fill the .env file.")

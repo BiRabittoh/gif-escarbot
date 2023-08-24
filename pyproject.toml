@@ -10,6 +10,7 @@ packages = [{include = "gif_escarbot"}]
 python = "^3.11"
 python-dotenv = "1.0.0"
 python-telegram-bot = "20.4"
+requests = "^2.31.0"
 
 
 [build-system]
