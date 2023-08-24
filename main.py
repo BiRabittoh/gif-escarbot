@@ -25,4 +25,4 @@ if __name__ == "__main__":
     application.add_handler(MessageHandler(filters.ChatType.CHANNEL, forward))
     application.add_handler(MessageHandler(filters.ChatType.PRIVATE, admin_forward))
     application.add_handler(MessageHandler(filters.ChatType.GROUPS, replace))
-    application.run_polling(allowed_updates=[Update.MESSAGE, Update.CALLBACK_QUERY])
+    application.run_polling(allowed_updates=[Update.CHANNEL_POST, Update.MESSAGE, Update.CALLBACK_QUERY])
