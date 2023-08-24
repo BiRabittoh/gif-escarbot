@@ -63,7 +63,7 @@ async def replace(update: Update, _) -> None:
     for link in links:
         logger.info(link)
         text = link_message.format(update.effective_user.mention_markdown_v2(), link)
-        message = await update.message.reply_text(text, parse_mode=ParseMode.MARKDOWN_V2)
+        message = await update.effective_chat.send_message(text, parse_mode=ParseMode.MARKDOWN_V2)
         await sleep(FEEDBACK_TIMEOUT)
         await message.edit_reply_markup(reply_markup=get_message_markup())
 
