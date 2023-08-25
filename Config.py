@@ -8,7 +8,7 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 INLINE_SEP = 3 * "#"
-FEEDBACK_TIMEOUT = getenv("feedback_timeout", 3)
+FEEDBACK_TIMEOUT = int(getenv("feedback_timeout", 3))
 
 def config_error():
     logger.error("Please create and fill the .env file.")
