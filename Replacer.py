@@ -20,6 +20,10 @@ replacers = [
         "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?x\.com\/(?:#!\/)?(.*)\/status(?:es)?\/([^\/\?\s]+)", re_flags),
         "becomes": "https://fixupx.com/{}/status/{}",
     },
+    {
+        "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?instagram\.com\/((?:reel)|p)\/([A-Za-z0-9_]{11})[\/\?\w=&]*", re_flags),
+        "becomes": "https://ddinstagram.com/{}/{}",
+    },
 ]
 
 link_message = "Da {}[\.]({})"
