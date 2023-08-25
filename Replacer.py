@@ -16,9 +16,13 @@ replacers = [
         "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?twitter\.com\/(?:#!\/)?(.*)\/status(?:es)?\/([^\/\?\s]+)", re_flags),
         "becomes": "https://fxtwitter.com/{}/status/{}",
     },
+    {
+        "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?x\.com\/(?:#!\/)?(.*)\/status(?:es)?\/([^\/\?\s]+)", re_flags),
+        "becomes": "https://fixupx.com/{}/status/{}",
+    },
 ]
 
-link_message = "Link di {}[\.]({})"
+link_message = "Da {}[\.]({})"
 
 def get_callback_data(feedback: bool) -> str:
     payload = { "feedback": feedback }
