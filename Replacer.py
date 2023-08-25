@@ -7,10 +7,37 @@ logger = logging.getLogger(__name__)
 
 re_flags = re.I | re.M
 
+def get_human_readable(input_str: str, indicator: str, offset: int = 0) -> (int, int):
+    try:
+        result = int(input_str[offset:].split(indicator, maxsplit=1)[0])
+        return result, len(str(result)) + len(indicator)
+    except ValueError:
+        return 0, 0
+
+youtube_timestamp_regex = re.compile(r"(?:&|\?)t=(\d*h?\d*m?\d*s?)", re_flags)
+def youtube_timestamp(input_str: str) -> str:
+    result = youtube_timestamp_regex.findall(input_str)
+    try:
+        input_string = result[0]
+        seconds = int(input_string)
+        hours, remainder = divmod(seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+    except IndexError: # nothing to parse
+        return ""
+    except ValueError: # human-readable number
+        hours, offset = get_human_readable(input_string, "h")
+        minutes, offset = get_human_readable(input_string, "m", offset)
+        seconds, offset = get_human_readable(input_string, "s", offset)
+
+    if hours == 0:
+        return '{}:{:02}'.format(minutes, seconds)
+    return '{}:{:02}:{:02}'.format(hours, minutes, seconds)
+
 replacers = [
     {
-        "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?", re_flags),
+        "regex": re.compile(r"(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:(?:youtube(?:-nocookie)?\.com|youtu.be))(?:\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?", re_flags),
         "becomes": "https://y.outube.duckdns.org/{}",
+        "timestamp": youtube_timestamp
     },
     {
         "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?twitter\.com\/(?:#!\/)?(.*)\/status(?:es)?\/([^\/\?\s]+)", re_flags),
@@ -26,7 +53,7 @@ replacers = [
     },
 ]
 
-link_message = "Da {}[\.]({})"
+link_message = "Da {}[\.]({}) {}"
 
 def get_callback_data(feedback: bool) -> str:
     payload = { "feedback": feedback }
@@ -59,7 +86,13 @@ def parse_text(message: str) -> list:
         res = regex.findall(message)
         for r in res:
             link = format_template(site["becomes"], r)
-            output.append(link)
+            
+            try:
+                timestamp = site["timestamp"](r[-1])
+            except KeyError:
+                timestamp = None
+
+            output.append([link, timestamp])
     return output
 
 async def replace(update: Update, _) -> None:
@@ -70,7 +103,9 @@ async def replace(update: Update, _) -> None:
 
     for link in links:
         logger.info(link)
-        text = link_message.format(update.effective_user.mention_markdown_v2(update.effective_user.name), link)
+
+        user = update.effective_user.mention_markdown_v2(update.effective_user.name)
+        text = link_message.format(user, link[0], link[1])
         message = await update.effective_chat.send_message(text, parse_mode=ParseMode.MARKDOWN_V2)
         await sleep(FEEDBACK_TIMEOUT)
         await message.edit_reply_markup(reply_markup=get_message_markup())
