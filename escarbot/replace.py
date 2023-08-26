@@ -52,8 +52,8 @@ replacers = [
         "becomes": "https://ddinstagram.com/{}/{}",
     },
     {
-        "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/(@[\w]+)\/?(?:video)?\/?(\d+)?", re_flags),
-        "becomes": "https://tnktok.com/{}/{}",
+        "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/@([\w\d_.]+)\/(?:video)\/(\d+)", re_flags),
+        "becomes": "https://www.tnktok.com/@{}/video/{}",
     },
     {
         "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/([\w]+)\/?", re_flags),
