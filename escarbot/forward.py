@@ -1,5 +1,5 @@
 from telegram import Update
-from Config import CHANNEL_ID, GROUP_ID, ADMIN_ID
+from escarbot.config import CHANNEL_ID, GROUP_ID, ADMIN_ID
 import logging
 logger = logging.getLogger(__name__)
 

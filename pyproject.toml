@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "gif-escarbot"
+name = "escarbot"
 version = "0.1.0"
-description = "A gif-forwarding robot for Earthbound Café (https://linktr.ee/earthboundcafe)"
+description = "Earthbound Café's custom delivery bot with other cool utilities built-in."
 authors = ["Andronaco Marco <marco.andronaco@olivetti.com>"]
 readme = "README.md"
-packages = [{include = "gif_escarbot"}]
+packages = [{include = "escarbot"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

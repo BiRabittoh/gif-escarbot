@@ -1,6 +1,6 @@
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.constants import ParseMode
-from Config import INLINE_SEP, FEEDBACK_TIMEOUT
+from escarbot.config import INLINE_SEP, FEEDBACK_TIMEOUT
 import logging, re, json
 from asyncio import sleep
 logger = logging.getLogger(__name__)
