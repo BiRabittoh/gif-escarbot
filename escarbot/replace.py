@@ -51,6 +51,14 @@ replacers = [
         "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?instagram\.com\/((?:reel)|p)\/([A-Za-z0-9_]{11})[\/\?\w=&]*", re_flags),
         "becomes": "https://ddinstagram.com/{}/{}",
     },
+    {
+        "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/(@[\w]+)\/?(?:video)?\/?(\d+)?[\S]", re_flags),
+        "becomes": "https://tnktok.com/{}/{}",
+    },
+    {
+        "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/([\w]+)\/?", re_flags),
+        "becomes": "https://vm.tnktok.com/{}/",
+    },
 ]
 
 link_message = "Da {}[\.]({}) {}"

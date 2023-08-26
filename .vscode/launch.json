@@ -8,9 +8,8 @@
             "name": "Python: Bot",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
-            "console": "integratedTerminal",
+            "module": "escarbot",
             "justMyCode": true
-        }
+        },
     ]
 }
