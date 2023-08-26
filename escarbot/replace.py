@@ -52,7 +52,7 @@ replacers = [
         "becomes": "https://ddinstagram.com/{}/{}",
     },
     {
-        "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/(@[\w]+)\/?(?:video)?\/?(\d+)?[\S]", re_flags),
+        "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/(@[\w]+)\/?(?:video)?\/?(\d+)?", re_flags),
         "becomes": "https://tnktok.com/{}/{}",
     },
     {
@@ -98,7 +98,7 @@ def parse_text(message: str) -> list:
             try:
                 timestamp = site["timestamp"](r[-1])
             except KeyError:
-                timestamp = None
+                timestamp = ""
 
             output.append([link, timestamp])
     return output
