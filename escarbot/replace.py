@@ -35,7 +35,7 @@ def youtube_timestamp(input_str: str) -> str:
 
 replacers = [
     {
-        "regex": re.compile(r"(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:(?:youtube(?:-nocookie)?\.com|youtu.be))(?:\/(?:[\w\-]+\?v=|embed\/|live\/|v\/)?)([\w\-]+)(\S+)?", re_flags),
+        "regex": re.compile(r"(?:(?:https?:)?\/\/)?(?:(?:www|m)\.)?(?:(?:youtube(?:-nocookie)?\.com|youtu.be))(?:\/(?:[\w\-]+\?v=|embed\/|live\/|v\/|shorts\/)?)([\w\-]+)(\S+)?", re_flags),
         "becomes": "https://y.outube.duckdns.org/{}",
         "timestamp": youtube_timestamp
     },
