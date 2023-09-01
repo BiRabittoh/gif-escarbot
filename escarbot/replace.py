@@ -40,7 +40,7 @@ replacers = [
         "timestamp": youtube_timestamp
     },
     {
-        "regex": re.compile(r"(?:https?:\/\/)?(?:www\.)?twitter\.com\/(?:#!\/)?(.*)\/status(?:es)?\/([^\/\?\s]+)", re_flags),
+        "regex": re.compile(r"(?:https?:\/\/)(?:www\.)?twitter\.com\/(?:#!\/)?(.*)\/status(?:es)?\/([^\/\?\s]+)", re_flags),
         "becomes": "https://fxtwitter.com/{}/status/{}",
     },
     {
