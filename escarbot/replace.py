@@ -104,17 +104,18 @@ def parse_text(message: str) -> list:
     return output
 
 async def replace(update: Update, _) -> None:
+    message = update.message
     try:
-        links = parse_text(update.message.text)
+        links = parse_text(message.text)
     except TypeError:
-        links = parse_text(update.message.caption)
+        links = parse_text(message.caption)
 
     for link in links:
         logger.info(link)
-
         user = update.effective_user.mention_markdown_v2(update.effective_user.name)
         text = link_message.format(user, link[0], link[1])
-        message = await update.effective_chat.send_message(text, parse_mode=ParseMode.MARKDOWN_V2)
+        chat = update.effective_chat
+        message = await chat.send_message(text, parse_mode=ParseMode.MARKDOWN_V2, message_thread_id=message.message_thread_id)
         await sleep(FEEDBACK_TIMEOUT)
         await message.edit_reply_markup(reply_markup=get_message_markup())
 
