@@ -53,28 +53,26 @@ replacers = [
     },
     {
         "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/@([\w\d_.]+)\/(?:video)\/(\d+)", re_flags),
-        "becomes": "https://www.tnktok.com/@{}/video/{}",
+        "becomes": "https://www.vxtiktok.com/@{}/video/{}",
     },
     {
         "regex": re.compile(r"(?:https?:\/\/)?(?:(?:www)|(?:vm))?\.?tiktok\.com\/([\w]+)\/?", re_flags),
-        "becomes": "https://vm.tnktok.com/{}/",
+        "becomes": "https://vm.vxtiktok.com/{}/",
     },
 ]
 
-link_message = "Da {}[\.]({}) {}"
+link_message = "[🔗]({}) Da {}\. {}"
 
 def get_callback_data(feedback: bool) -> str:
     payload = { "feedback": feedback }
     return "feedback" + INLINE_SEP + json.dumps(payload)
 
-def get_message_markup() -> InlineKeyboardMarkup:
-    buttons = [
-        [
-            InlineKeyboardButton(text="✅", callback_data=get_callback_data(True)),
-            InlineKeyboardButton(text="❌", callback_data=get_callback_data(False)),
-        ]
+buttons = InlineKeyboardMarkup([
+    [
+        InlineKeyboardButton(text="✅", callback_data=get_callback_data(True)),
+        InlineKeyboardButton(text="❌", callback_data=get_callback_data(False)),
     ]
-    return InlineKeyboardMarkup(buttons)
+])
 
 def format_template(template: str, regex_result) -> str:
     result_type = type(regex_result)
@@ -113,11 +111,11 @@ async def replace(update: Update, _) -> None:
     for link in links:
         logger.info(link)
         user = update.effective_user.mention_markdown_v2(update.effective_user.name)
-        text = link_message.format(user, link[0], link[1])
+        text = link_message.format(link[0], user, link[1])
         chat = update.effective_chat
         message = await chat.send_message(text, parse_mode=ParseMode.MARKDOWN_V2, message_thread_id=message.message_thread_id)
         await sleep(FEEDBACK_TIMEOUT)
-        await message.edit_reply_markup(reply_markup=get_message_markup())
+        await message.edit_reply_markup(reply_markup=buttons)
 
 async def feedback(update: Update, _, data_json: str) -> None:
     data = json.loads(data_json)
